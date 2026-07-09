@@ -3,11 +3,6 @@
 
 #include "TBTTimer.h"
 
-UTBTTimer::UTBTTimer()
-{
-	UE_LOG(LogTemp, Display, TEXT("Constructor called.."));
-}
-
 void UTBTTimer::Initialize(UObject* WorldContextObject, float InDuration, float InTickRate)
 {
 	if (!WorldContextObject)
@@ -26,8 +21,6 @@ void UTBTTimer::Initialize(UObject* WorldContextObject, float InDuration, float 
 		IsTimerInfinite = true;
 	}
 
-	UE_LOG(LogTemp, Display, TEXT("Passed inspection."));
-
 
 }
 
@@ -40,10 +33,9 @@ void UTBTTimer::Start()
 	}
 
 	TimeRemaining = TimerDuration;
-	UE_LOG(LogTemp, Display, TEXT("TimeRemaining: %f"), TimeRemaining);
 	TimeElapsed = 0;
 
-	UE_LOG(LogTemp, Display, TEXT("Starting timer.."));
+	// UE_LOG(LogTemp, Display, TEXT("Starting timer.."));
 	World->GetTimerManager().SetTimer(
 		TimerHandle,
 		this,
@@ -62,21 +54,26 @@ void UTBTTimer::Tick()
 	
 	if (TimeRemaining <= 0.0f && !IsTimerInfinite)
 	{
-		OnTimerFinished.Broadcast();
-		UE_LOG(LogTemp, Display, TEXT("Timer is completed"));
 		Stop();
+
+		// UE_LOG(LogTemp, Display, TEXT("Timer is completed"));
+
+		OnTimerFinished.Broadcast();
 	}
 }
 
 void UTBTTimer::Stop()
 {
-	World->GetTimerManager().ClearTimer(TimerHandle);
-	UE_LOG(LogTemp, Display, TEXT("Timer is stopped"));
+	if (World->GetTimerManager().IsTimerActive(TimerHandle))
+	{
+		World->GetTimerManager().ClearTimer(TimerHandle);
+	}
+	// UE_LOG(LogTemp, Display, TEXT("Timer is stopped"));
 }
 
 void UTBTTimer::Restart()
 {
-	UE_LOG(LogTemp, Display, TEXT("Trying to restart..."));
+	// UE_LOG(LogTemp, Display, TEXT("Trying to restart..."));
 	Stop();
 
 	TimeRemaining = TimerDuration;

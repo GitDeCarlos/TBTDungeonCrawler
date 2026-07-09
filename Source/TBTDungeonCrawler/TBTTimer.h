@@ -23,8 +23,6 @@ class TBTDUNGEONCRAWLER_API UTBTTimer : public UObject
 	GENERATED_BODY()
 	
 public:
-	// Constructor
-	UTBTTimer();
 
 	// Custom Event Dispatchers
 	UPROPERTY(BlueprintAssignable)
@@ -65,6 +63,5 @@ private:
 	// Private variables
 	float TimeElapsed;
 	float TimeRemaining;
-
 	bool IsTimerInfinite = false;
 };
